@@ -11,6 +11,9 @@ def index(request):
     else:
         return redirect('login')
 
+def home(request):
+    context = {}
+    return render(request, "cqa/home.html", context)
 
 def login_view(request):
     context = {}
@@ -20,7 +23,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('index')
+            return redirect('home')
         else:
             context['errors'] = "Provide valid credentials !!"
             print(username, password, context)
