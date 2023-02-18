@@ -33,5 +33,6 @@ class detail_post(DetailView):
     
     def get_context_data(self, *args, **kwargs):
         qs = super(detail_post, self).get_context_data(*args, **kwargs)
-        print(qs)
+        # qs['user'] = "hallo"
+        # print(type(self.request.user.display_name))
         return qs
