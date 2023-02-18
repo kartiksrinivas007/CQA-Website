@@ -5,7 +5,10 @@
         {% for post in posts %}
         {% if post.title != None %}
             <li> 
-                choice {{forloop.counter}} {{ post.title }}
+                choice {{forloop.counter}} 
+                <a href="{% url 'detail_post' post.id %}">
+                    {{ post.title }}
+                </a>
             </li>
         {% endif %}
         {% endfor %}

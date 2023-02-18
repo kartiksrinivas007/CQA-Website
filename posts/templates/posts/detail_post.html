@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{post.title}}</h1>
+    <br><br/>
+    {{ post.body | safe }} 
+    <br><br/>
+    <!-- that stuff "safe" is needed because the Body is itself an HTML string !!!! other option is to use 
+        safe then\ <p>{{post.author}}</p>
+    <br><br/>
+    <p>Created At = {{post.created_at}}</p>
+    <br><br/>
+    <p>Last Updated = {{post.updated_at}}</p>
+    <br><br/> -->
+{% endblock %}
