@@ -6,7 +6,8 @@ from django.contrib.auth.models import User as AuthUser
 
 def index(request):
     if request.user.is_authenticated:
-        return HttpResponse(f"Hello, world. You're at the polls index.{request.user}")
+        # return HttpResponse(f"Hello, world. You're at the polls index.{request.user}")
+        return render(request, "base.html", {})
     else:
         return redirect('login')
 
