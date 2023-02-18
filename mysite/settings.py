@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'posts',
+    'search',
     'cqa.apps.CqaConfig',
     'django.contrib.admin',
     'django.contrib.auth',
