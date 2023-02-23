@@ -13,9 +13,16 @@ def index(request):
     else:
         return redirect('login')
 
-# def home(request):
-#     context = {}
-#     return render(request, "cqa/home.html", context)
+def home(request):
+    context = {}
+    user = request.user
+    # now find the other details of the user and then render them on the homepage
+    print(type(user))
+    print(request.user.id)
+    User = Users.objects.get(account_id = request.user.id) # primary key of the user and now everything can be rendered
+    print(User)
+    context["User"] = User
+    return render(request, "cqa/home.html", context)
 
 def login_view(request):
     context = {}
@@ -49,20 +56,20 @@ def signup_view(request):
         return render(request, "signup.html", context)
 
        
-class HomeView(ListView):
-    #render all posts of this particular user
-    model = Posts
-    context_object_name = 'posts'
-    template_name = 'cqa/home.html'
-    ordering = ['-creation_date']
-    paginate_by = 10
-    context_object_name = 'user_posts'
+# class HomeView(ListView):
+#     #render all posts of this particular user
+#     model = Posts
+#     context_object_name = 'posts'
+#     template_name = 'cqa/home.html'
+#     ordering = ['-creation_date']
+#     paginate_by = 10
+#     context_object_name = 'user_posts'
     
     
-    def get_query_set(self ,*args, **kwargs):
-        # posts = super(HomeView, self).get_query_set(self, *args, **kwargs)
-        # user = Users.objects.get(user_id = self.request.user.id)
-        # print(user)
-        # posts = posts.filter(owner_user_id = user.owner_user_id)
-        posts = []
-        return posts
+#     def get_query_set(self ,*args, **kwargs):
+#         # posts = super(HomeView, self).get_query_set(self, *args, **kwargs)
+#         # user = Users.objects.get(user_id = self.request.user.id)
+#         # print(user)
+#         # posts = posts.filter(owner_user_id = user.owner_user_id)
+#         posts = []
+#         return posts
