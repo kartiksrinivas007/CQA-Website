@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+# Uses all the models defined in cqa.models
+from cqa.models import *
