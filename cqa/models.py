@@ -77,11 +77,11 @@ class Posts(models.Model):
     content_license = models.CharField(max_length=64)
     body = models.TextField(blank=True, null=True)
     favorite_count = models.IntegerField(blank=True, null=True)
-    creation_date = models.DateTimeField()
+    creation_date = models.DateTimeField(auto_now=True)
     community_owned_date = models.DateTimeField(blank=True, null=True)
     closed_date = models.DateTimeField(blank=True, null=True)
-    last_edit_date = models.DateTimeField(blank=True, null=True)
-    last_activity_date = models.DateTimeField(blank=True, null=True)
+    last_edit_date = models.DateTimeField(blank=True, null=True, auto_now=True)
+    last_activity_date = models.DateTimeField(blank=True, null=True, auto_now=True)
 
     class Meta:
         managed = False

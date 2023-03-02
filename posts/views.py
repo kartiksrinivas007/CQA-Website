@@ -3,6 +3,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .models import *
 from posts.forms import CreatePost
+from django.shortcuts import redirect
 
 # app_name = 'posts'
 # Create your views here.
@@ -38,7 +39,28 @@ class detail_post(DetailView):
         # print(type(self.request.user.display_name))
         return qs
 
+
 def create_post(request):
+    if request.method == 'POST':
+        form = CreatePost(request.POST)
+        if form.is_valid():
+            object = Posts()
+            object.owner_user_id = 10 # dummy value
+            object.post_type_id = '1'
+            object.answer_count = 0
+            object.comment_count = 0
+            object.owner_display_name = 'Fuji KN'
+            object.title = form.cleaned_data['title']
+            object.tags = form.cleaned_data['tags']
+            object.content_license='CC BY SA 2.5'  # dummy value
+            object.body = form.cleaned_data['body']
+
+            object.score = 0 # dummy
+            
+            object.save()
+            return redirect('show_posts')
+
+
     new_post = CreatePost()
     context = {'form': new_post}
     return render(request, 'posts/creation_form.html', context)
