@@ -54,7 +54,7 @@ def create_post(request):
             object.tags = form.cleaned_data['tags']
             object.content_license='CC BY SA 2.5'  # dummy value
             object.body = form.cleaned_data['body']
-
+            # insert the corresponding fields into the tags table as well
             object.score = 0 # dummy
             
             object.save()
