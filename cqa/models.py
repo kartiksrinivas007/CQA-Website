@@ -6,7 +6,59 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+
+class UserManager(BaseUserManager):
+
+    def create_user(self, username, password=None):
+        user = self.model(
+            username = username,
+            id = CustomUser.objects.count() + 1
+        )
+        print(user.id)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+    
+    def create_superuser(self, username, password=None):
+        user = self.create_user(
+            username,
+            password=password,
+        )
+        user.is_staff = True
+        user.save(using=self._db)
+        return user
+    
+class CustomUser(AbstractBaseUser):
+    username = models.CharField(max_length=255, unique=True)
+    account_id = models.IntegerField(blank=True, null=True, unique=True)
+    display_name = models.CharField(max_length=255)
+    id = models.IntegerField(primary_key=True)
+
+    password = models.CharField(max_length=255)
+    reputation = models.IntegerField(default=0)
+    views = models.IntegerField(blank=True, null=True)
+    down_votes = models.IntegerField(blank=True, null=True)
+    up_votes = models.IntegerField(blank=True, null=True)
+    location = models.CharField(max_length=512, blank=True, null=True)
+    profile_image_url = models.CharField(max_length=255, blank=True, null=True)
+    website_url = models.CharField(max_length=255, blank=True, null=True)
+    about_me = models.TextField(blank=True, null=True)
+    creation_date = models.DateTimeField(auto_now=True)
+    last_access_date = models.DateTimeField(auto_now=True)
+
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False, db_column='is_admin')
+    last_login = models.DateField(auto_now=True)
+
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()
+
+    class Meta:
+        managed = False
+        db_table = 'users'
 
 class Badges(models.Model):
     user_id = models.IntegerField()
@@ -97,27 +149,6 @@ class Tags(models.Model):
     class Meta:
         managed = False
         db_table = 'tags'
-
-
-class Users(models.Model):
-    account_id = models.IntegerField(blank=True, null=True)
-    password = models.CharField(max_length=255)
-    reputation = models.IntegerField()
-    views = models.IntegerField(blank=True, null=True)
-    down_votes = models.IntegerField(blank=True, null=True)
-    up_votes = models.IntegerField(blank=True, null=True)
-    display_name = models.CharField(max_length=255)
-    location = models.CharField(max_length=512, blank=True, null=True)
-    profile_image_url = models.CharField(max_length=255, blank=True, null=True)
-    website_url = models.CharField(max_length=255, blank=True, null=True)
-    about_me = models.TextField(blank=True, null=True)
-    creation_date = models.DateTimeField()
-    last_access_date = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'users'
-
 
 class Votes(models.Model):
     user_id = models.IntegerField(blank=True, null=True)
