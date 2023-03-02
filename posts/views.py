@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .models import *
+from posts.forms import CreatePost
 
 # app_name = 'posts'
 # Create your views here.
@@ -36,3 +37,8 @@ class detail_post(DetailView):
         # qs['user'] = "hallo"
         # print(type(self.request.user.display_name))
         return qs
+
+def create_post(request):
+    new_post = CreatePost()
+    context = {'form': new_post}
+    return render(request, 'posts/creation_form.html', context)
