@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .models import *
-from posts.forms import CreatePost
+from posts.forms import CreatePost, EditPost
 from django.shortcuts import redirect
+from django.http import HttpResponse
 
 # app_name = 'posts'
 # Create your views here.
@@ -54,7 +55,8 @@ def create_post(request):
             object.tags = form.cleaned_data['tags']
             object.content_license='CC BY SA 2.5'  # dummy value
             object.body = form.cleaned_data['body']
-            # insert the corresponding fields into the tags table as well
+
+            # TO DO: insert the corresponding fields into the tags table as well
             object.score = 0 # dummy
             
             object.save()
@@ -64,3 +66,31 @@ def create_post(request):
     new_post = CreatePost()
     context = {'form': new_post}
     return render(request, 'posts/creation_form.html', context)
+
+def edit_post(request, post_id):
+
+    curr_post = Posts.objects.get(id=post_id)
+
+    # TO DO: check if the owner of the post is the logged in user
+
+    if request.method == 'POST':
+        form = EditPost(curr_post, request.POST)
+        if form.is_valid():
+            print('Hello')
+            curr_post.title = form.cleaned_data['title']
+            curr_post.body = form.cleaned_data['body']
+            curr_post.tags = form.cleaned_data['tags']
+            curr_post.save()
+            return redirect('show_posts')
+        else:
+            print('bonk')
+            print(form.errors)
+            print(form.non_field_errors)
+    
+    form = EditPost(curr_post)
+    context = {'form': form, 'post_id': post_id}
+    return render(request, 'posts/edit_form.html', context)
+
+    
+         
+    
