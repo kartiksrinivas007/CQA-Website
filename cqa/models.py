@@ -6,14 +6,15 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+
 
 class UserManager(BaseUserManager):
 
     def create_user(self, username, password=None):
         user = self.model(
             username = username,
-            id = CustomUser.objects.count() + 1
+            account_id = CustomUser.objects.count() + 1
         )
         print(user.id)
         user.set_password(password)
@@ -33,7 +34,6 @@ class CustomUser(AbstractBaseUser):
     username = models.CharField(max_length=255, unique=True)
     account_id = models.IntegerField(blank=True, null=True, unique=True)
     display_name = models.CharField(max_length=255)
-    id = models.IntegerField(primary_key=True)
 
     password = models.CharField(max_length=255)
     reputation = models.IntegerField(default=0)
@@ -55,6 +55,12 @@ class CustomUser(AbstractBaseUser):
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+
+    def has_perm(self, perm, obj=None):
+        return self.is_staff
+
+    def has_module_perms(self, app_label):
+        return self.is_staff
 
     class Meta:
         managed = False

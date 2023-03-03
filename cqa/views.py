@@ -8,20 +8,13 @@ from .models import *
 
 def index(request):
     if request.user.is_authenticated:
-        # return HttpResponse(f"Hello, world. You're at the polls index.{request.user}")
         return render(request, "base.html", {})
     else:
         return redirect('login')
 
 def home(request):
     context = {}
-    user = request.user
-    # now find the other details of the user and then render them on the homepage
-    print(type(user))
-    print(request.user.id)
-    User = Users.objects.get(account_id = request.user.id) # primary key of the user and now everything can be rendered
-    print(User)
-    context["User"] = User
+    context["User"] = request.user.username
     return render(request, "cqa/home.html", context)
 
 def login_view(request):
@@ -36,9 +29,9 @@ def login_view(request):
         else:
             context['errors'] = "Provide valid credentials !!"
             print(username, password, context)
-            return render(request, "login.html", context)
+            return render(request, "cqa/login.html", context)
     else:
-        return render(request, "login.html", context)
+        return render(request, "cqa/login.html", context)
 
 def signup_view(request):
     context = {}
@@ -51,9 +44,9 @@ def signup_view(request):
             return redirect('login')
         else:
             context['errors'] = "Provide valid credentials !!"
-            return render(request, "signup.html", context)
+            return render(request, "cqa/signup.html", context)
     else:
-        return render(request, "signup.html", context)
+        return render(request, "cqa/signup.html", context)
 
        
 # class HomeView(ListView):
