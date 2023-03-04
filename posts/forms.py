@@ -15,10 +15,6 @@ class EditPost(forms.Form):
         super(EditPost, self).__init__(*args, **kwargs)
         self.fields['title']. initial = post.title
         self.fields['body']. initial = post.body
-        
 
-        
-
-    
-
-    
+class AnswerPost(forms.Form):
+    body = forms.CharField(widget=forms.Textarea)

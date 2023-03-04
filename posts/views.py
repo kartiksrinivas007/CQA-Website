@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .models import *
-from posts.forms import CreatePost, EditPost
+from posts.forms import CreatePost, EditPost, AnswerPost
 from django.shortcuts import redirect
 from django.http import HttpResponse
 
@@ -91,6 +91,30 @@ def edit_post(request, post_id):
     context = {'form': form, 'post_id': post_id}
     return render(request, 'posts/edit_form.html', context)
 
-    
-         
-    
+
+def answer_post(request, post_id):
+    curr_post = Posts.objects.get(id = post_id) 
+    if request.method == 'POST':
+        form = AnswerPost(request.POST, curr_post)
+        if form.is_valid():
+            object = Posts()
+            object.owner_user_id = 42 # dummy
+            object.post_type_id = '2'
+            object.answer_count = 0
+            curr_post.answer_count += 1
+
+            object.comment_count = 0
+            object.owner_user_id = 42  # dummy val
+            object.tags = curr_post.tags
+            object.content_license = curr_post.content_license
+            object.parent_id = curr_post.pk
+            object.body = form.cleaned_data['body']
+
+            object.score = 0
+
+            object.save()
+            return redirect('detail_post', pk=post_id)
+
+    form = AnswerPost()
+    context = {'form': form, 'post_id': post_id,}
+    return render(request, 'posts/answer_form.html', context)
