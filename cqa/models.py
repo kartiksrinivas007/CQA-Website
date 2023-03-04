@@ -45,11 +45,10 @@ class CustomUser(AbstractBaseUser):
     website_url = models.CharField(max_length=255, blank=True, null=True)
     about_me = models.TextField(blank=True, null=True)
     creation_date = models.DateTimeField(auto_now=True)
-    last_access_date = models.DateTimeField(auto_now=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False, db_column='is_admin')
-    last_login = models.DateField(auto_now=True)
+    last_login = models.DateField(auto_now=True, db_column='last_access_date')
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
