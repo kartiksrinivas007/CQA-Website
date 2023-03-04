@@ -34,6 +34,7 @@ class CustomUser(AbstractBaseUser):
     username = models.CharField(max_length=255, unique=True)
     account_id = models.IntegerField(blank=True, null=True, unique=True)
     display_name = models.CharField(max_length=255)
+    id = models.AutoField(primary_key=True)
 
     password = models.CharField(max_length=255)
     reputation = models.IntegerField(default=0)
