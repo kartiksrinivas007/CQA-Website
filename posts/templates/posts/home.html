@@ -3,11 +3,9 @@
     <h1>Posts</h1>
     <ul>
         {% for post in posts %}
-        {% if post.title != None %}
-            <li> 
-                {% include 'snippets/post_snippet.html'%}
-            </li>
-        {% endif %}
+        <li>      
+            {% include 'snippets/post_snippet.html'%}
+        </li>
         {% endfor %}
     </ul>
 {% endblock %}

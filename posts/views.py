@@ -5,52 +5,49 @@ from .models import *
 from posts.forms import CreatePost, EditPost, AnswerPost
 from django.shortcuts import redirect
 from django.http import HttpResponse
-
-# app_name = 'posts'
-# Create your views here.
-
-# def show_posts(request):
-#     context  =  {}
     
-# 
-#return render(request, 'show_posts.html')
+def home(request):
+    posts = Posts.objects.filter().exclude(title=None)[0:10]
+    context = {'posts': posts}
+    return render(request, 'posts/home.html', context)
 
-class show_posts(ListView):
-    template_name = 'posts/show_posts.html'
-    model = Posts
-    ordering = ['-creation_date']
-    paginate_by = 10
-    context_object_name = 'posts'
+def detail_post(request, post_id):
+    post = Posts.objects.filter(id=post_id)[0]
+    answers = Posts.objects.filter(parent_id=post_id)
+    context = {
+        'post': post,
+        'answers': answers
+    }
+    return render(request, 'posts/detail_post.html', context)
+    pass
+
+# class detail_post(DetailView):
+#     template_name = 'posts/detail_post.html'
+#     model = Posts
+#     ordering = ['-creation_date']
+#     context_object_name = 'post'
     
-    def get_query_set(self, *args, **kwargs):
-        qs = super(show_posts, self).get_query_set(*args, **kwargs)
-        print(qs)
-        return qs
-
-
-class detail_post(DetailView):
-    template_name = 'posts/detail_post.html'
-    model = Posts
-    ordering = ['-creation_date']
-    context_object_name = 'post'
-    
-    def get_context_data(self, *args, **kwargs):
-        qs = super(detail_post, self).get_context_data(*args, **kwargs)
-        # qs['user'] = "hallo"
-        # print(type(self.request.user.display_name))
-        return qs
+#     def get_context_data(self, *args, **kwargs):
+#         qs = super(detail_post, self).get_context_data(*args, **kwargs)
+#         # qs['user'] = "hallo"
+#         # print(type(self.request.user.display_name))
+#         return qs
 
 
 def create_post(request):
+    if not request.user.is_authenticated:
+        redirect('home')
+
     if request.method == 'POST':
         form = CreatePost(request.POST)
+        user = request.user
         if form.is_valid():
             object = Posts()
-            object.owner_user_id = 10 # dummy value
+            object.owner_user_id = user.account_id
             object.post_type_id = '1'
             object.answer_count = 0
             object.comment_count = 0
-            object.owner_display_name = 'Fuji KN'
+            object.owner_display_name = user.display_name
             object.title = form.cleaned_data['title']
             object.tags = form.cleaned_data['tags']
             object.content_license='CC BY SA 2.5'  # dummy value
@@ -60,7 +57,7 @@ def create_post(request):
             
             object.save()
             # redirect to a detail view of the post you just created instead
-            return redirect('show_posts')
+            return redirect('profile')
 
 
     new_post = CreatePost()
@@ -69,9 +66,15 @@ def create_post(request):
 
 def edit_post(request, post_id):
 
-    curr_post = Posts.objects.get(id=post_id)
+    if not request.user.is_authenticated:
+        redirect('home')
 
-    # TO DO: check if the owner of the post is the logged in user
+    curr_post = Posts.objects.get(id=post_id)
+    user = request.user
+
+    # Checking if the user is the owner of the post
+    if curr_post.owner_user_id != user.account_id:
+        redirect('home')
 
     if request.method == 'POST':
         form = EditPost(curr_post, request.POST)
@@ -81,7 +84,7 @@ def edit_post(request, post_id):
             curr_post.body = form.cleaned_data['body']
             curr_post.tags = form.cleaned_data['tags']
             curr_post.save()
-            return redirect('show_posts')
+            return redirect('home')
         else:
             print('bonk')
             print(form.errors)
@@ -93,13 +96,19 @@ def edit_post(request, post_id):
 
 
 def answer_post(request, post_id):
+
+    if not request.user.is_authenticated:
+        redirect('home')
+    
     curr_post = Posts.objects.get(id = post_id) 
+    user = request.user
+
     if request.method == 'POST':
         form = AnswerPost(request.POST, curr_post)
         if form.is_valid():
             object = Posts()
 
-            object.owner_user_id = 42 # dummy
+            object.owner_user_id = user.account_id
             object.post_type_id = '2'
             object.answer_count = 0
             if not curr_post.answer_count:
@@ -107,7 +116,6 @@ def answer_post(request, post_id):
             curr_post.answer_count += 1
 
             object.comment_count = 0
-            object.owner_user_id = 42  # dummy val
             object.tags = curr_post.tags
             object.content_license = curr_post.content_license
             object.parent_id = curr_post.pk

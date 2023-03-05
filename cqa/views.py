@@ -8,7 +8,7 @@ from .models import *
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, "base.html", {})
+        return redirect('home')
     else:
         return redirect('login')
 
@@ -53,4 +53,16 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+def profile_view(request):
+    if request.user.is_authenticated:
+        posts = Posts.objects.filter(owner_user_id = request.user.account_id)
+        context = {
+            'user_id': request.user.account_id,
+            'username': request.user.display_name,
+            'posts': posts
+        }
+        return render(request, 'cqa/profile.html', context)
+    else:
+        return redirect('login')
 

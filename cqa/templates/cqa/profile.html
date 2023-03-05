@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> Welcome to your profile page: {{username}} </h1>
+<hr>
+    <h2>Your posts:</h2>
+    <ul>
+        {% for post in posts %}
+        <li>{% include 'snippets/post_snippet.html' %} </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
