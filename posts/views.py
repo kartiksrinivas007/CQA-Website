@@ -98,6 +98,7 @@ def answer_post(request, post_id):
         form = AnswerPost(request.POST, curr_post)
         if form.is_valid():
             object = Posts()
+
             object.owner_user_id = 42 # dummy
             object.post_type_id = '2'
             object.answer_count = 0
@@ -110,12 +111,13 @@ def answer_post(request, post_id):
             object.tags = curr_post.tags
             object.content_license = curr_post.content_license
             object.parent_id = curr_post.pk
+            object.title = "[Answer]" + curr_post.title
             object.body = form.cleaned_data['body']
 
             object.score = 0
 
             object.save()
-            return redirect('detail_post', pk=post_id)
+            return redirect('detail_post', pk=object.pk)
 
     form = AnswerPost()
     context = {'form': form, 'post_id': post_id,}

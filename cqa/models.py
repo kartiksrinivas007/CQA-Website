@@ -119,7 +119,6 @@ class PostLinks(models.Model):
 
 
 class Posts(models.Model):
-    id = models.AutoField(primary_key=True)
     owner_user_id = models.IntegerField(blank=True, null=True)
     last_editor_user_id = models.IntegerField(blank=True, null=True)
     post_type_id = models.SmallIntegerField()
