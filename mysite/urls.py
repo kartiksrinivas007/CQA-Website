@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='django-admin'),
     path('cqa/', include('cqa.urls')),
     path('posts/', include('posts.urls')),
-    path('search/', include('search.urls'))
+    path('search/', include('search.urls')),
 ]
