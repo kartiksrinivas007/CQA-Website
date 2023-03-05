@@ -18,6 +18,9 @@
     {% endif %}
 </div>
 <div class="d-flex align-items-center justify-content-center">Tags: {{post.tags}}</div>
+<div class="d-flex align-items-center justify-content-center">
+    Post By: {{username}} (User # {{post.owner_user_id}})
+</div>
 
     
 <div class="align-items-center justify-content-center" style="margin-left:20px; margin-right:20px">
@@ -25,13 +28,6 @@
     {{ post.body | safe }} 
     <br><br/>
     <h3>{{post.user}}</h3>
-    <!-- that stuff "safe" is needed because the Body is itself an HTML string !!!! other option is to use 
-        safe then\ <p>{{post.author}}</p>
-    <br><br/>
-    <p>Created At = {{post.created_at}}</p>
-    <br><br/>
-    <p>Last Updated = {{post.updated_at}}</p>
-    <br><br/> -->
 </div>
 
 

@@ -56,7 +56,7 @@ def logout_view(request):
 
 def profile_view(request):
     if request.user.is_authenticated:
-        posts = Posts.objects.filter(owner_user_id = request.user.account_id)
+        posts = Posts.objects.filter(owner_user_id = request.user.id)
         context = {
             'user_id': request.user.account_id,
             'username': request.user.display_name,

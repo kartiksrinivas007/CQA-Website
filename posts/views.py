@@ -15,9 +15,15 @@ def home(request):
 def detail_post(request, post_id):
     post = Posts.objects.filter(id=post_id)[0]
     answers = Posts.objects.filter(parent_id=post_id)
+    user = CustomUser.objects.filter(id = post.owner_user_id)
+    if user.count() == 0:
+        username = ''
+    else:
+        username = user[0].username
     context = {
         'post': post,
-        'answers': answers
+        'answers': answers,
+        'username': username
     }
     return render(request, 'posts/detail_post.html', context)
     pass
@@ -45,7 +51,7 @@ def create_post(request):
         user = request.user
         if form.is_valid():
             object = Posts()
-            object.owner_user_id = user.account_id
+            object.owner_user_id = user.id
             object.post_type_id = '1'
             object.answer_count = 0
             object.comment_count = 0
@@ -53,6 +59,7 @@ def create_post(request):
             object.title = form.cleaned_data['title']
             object.tags = form.cleaned_data['tags']
             tags = form.cleaned_data['tags'].split(',')
+            tags = [tag[1:] for tag in tags]
             tags = [ '<' + tag.strip() + '>' for tag in tags ]
             object.tags = ''.join(tags)
             object.content_license='CC BY SA 2.5'  # dummy value
@@ -118,7 +125,7 @@ def answer_post(request, post_id):
         if form.is_valid():
             object = Posts()
 
-            object.owner_user_id = user.account_id
+            object.owner_user_id = user.id
             object.post_type_id = '2'
             object.answer_count = 0
             if not curr_post.answer_count:
