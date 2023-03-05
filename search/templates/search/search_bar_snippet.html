@@ -1,4 +1,10 @@
-<form id="form"> 
+<!-- <form id="form", method="GET"> 
     <input type="search" id="query" name="q" placeholder="Search...">
     <button>Search</button>
+</form> -->
+
+<form action="{% url 'search_view' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit">
 </form>
