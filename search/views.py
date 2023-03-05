@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .models import *
+from cqa.models import *
 from search.forms import SearchForm
 from django.shortcuts import redirect
 from django.http import HttpResponse
@@ -19,6 +20,9 @@ def search_view(request):
     form = SearchForm()
     context = {}
     context["form"] = form
+    context["tags"] = ['#' + tag.tag_name for tag in Tags.objects.all()]
+    context["users"] = [":" + str(id) + "   Name:   "  + str(display_name) for id, display_name in CustomUser.objects.all().values_list('id','display_name')]
+    print(context["users"][1])
     return render(request, "search/search_view.html", context)
 
 class search_results_view(ListView):
@@ -38,9 +42,9 @@ class search_results_view(ListView):
         if(search[0] == '#'):
             tags = search.split(',')
             tags = [ '<' + tag[1:].strip() + '>' for tag in tags ]
-            print(tags)
+            string =''.join(tags)
             for tag in tags:
-                q = Posts.objects.filter(Q(tags__icontains = tag))
+                q = Posts.objects.filter(Q(tags__icontains = string))
             return q
         else:
             return Posts.objects.filter(Q(title__icontains = search) | Q(body__icontains = search))

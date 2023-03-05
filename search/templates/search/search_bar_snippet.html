@@ -5,6 +5,29 @@
 
 <form action="{% url 'search_view' %}" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.as_p }} 
     <input type="submit">
+    <script>
+    $( function() {
+        var tags =[ 
+        {% for tag in tags %} 
+        "{{tag}}", 
+        {% endfor %} 
+        ];
+
+        var users =[
+        {% for user in users%}
+        "{{user}}",
+        {% endfor %}
+        ];
+
+        net = tags.concat(users);
+
+        $( "#id_search" ).autocomplete({
+            source: net,
+            minLength: 1,
+        });
+} );
+</script>
+    </form>
 </form>
