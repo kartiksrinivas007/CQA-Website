@@ -34,14 +34,20 @@ class search_results_view(ListView):
         # try user 200302
         if(search[0] == ':'):
             search = search[1:]
-            q = Posts.objects.filter(Q(owner_user_id__icontains = search))
+            user_id = search.split(' ')[0]
+            q = Posts.objects.filter(owner_user_id = int(user_id))
             return q
         if(search[0] == '#'):
             tags = search.split(',')
             tags = [ '<' + tag[1:].strip() + '>' for tag in tags ]
-            string =''.join(tags)
+            # string =''.join(tags)
+            # for tag in tags:
+            #     q = Posts.objects.filter(Q(tags__icontains = string))
+            # return q
+            string = tags[0]
+            q = Posts.objects.filter(tags__icontains = string)
             for tag in tags:
-                q = Posts.objects.filter(Q(tags__icontains = string))
+                q = q.union(Posts.objects.filter(tags__icontains = tag))
             return q
         else:
             return Posts.objects.filter(Q(title__icontains = search) | Q(body__icontains = search))

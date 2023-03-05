@@ -8,11 +8,9 @@
 <div class="d-flex align-items-center justify-content-center">
     <ul>
         {% for post in posts %}
-        {% if post.title != None %}
             <li> 
                 {% include 'snippets/post_snippet.html'%}
             </li>
-        {% endif %}
         {% endfor %}
     </ul>
 </div>
