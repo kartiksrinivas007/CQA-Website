@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{post.title}}</h1>
+    {% if post.title is None %}
+        <h1>Untitled Post</h1>
+    {% else %}
+        <h1>{{post.title}}</h1>
+    {% endif%}
+    
     <br><br/>
     {{ post.body | safe }} 
     <br><br/>
@@ -13,4 +18,12 @@
     <br><br/>
     <p>Last Updated = {{post.updated_at}}</p>
     <br><br/> -->
+    {% if answers.count > 0 %}
+        <h2>Answers:</h2>
+        {% for post in answers %}
+            <li>      
+                {% include 'snippets/post_snippet.html'%}
+            </li>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
