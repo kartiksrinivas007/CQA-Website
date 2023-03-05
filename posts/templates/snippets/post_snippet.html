@@ -10,7 +10,7 @@
 
 
 <a href="{%url 'answer_post' post_id=post.id%}" style = 'color:rgb(235, 67, 196); margin:2px'>(Answer)</a>
-{% if post.owner_user_id == request.user.account_id %}
+{% if post.owner_user_id == request.user.id %}
 <a href="{%url 'edit_post' post_id=post.id%}" style = 'color:rgb(219, 195, 10); margin:2px'>(Edit)</a>
 {% endif %}
 

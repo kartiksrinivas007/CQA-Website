@@ -142,7 +142,7 @@ def answer_post(request, post_id):
             object.score = 0
 
             object.save()
-            return redirect('detail_post', pk=object.pk)
+            return redirect('detail_post', post_id=object.pk)
 
     form = AnswerPost()
     context = {'form': form, 'post_id': post_id,}
