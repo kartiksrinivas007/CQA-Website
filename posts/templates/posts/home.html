@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
+<br>
+<br>
+<div class="d-flex align-items-center justify-content-center">
     <h1>Posts</h1>
+</div>
+<div class="d-flex align-items-center justify-content-center">
     <ul>
         {% for post in posts %}
         <li>      
@@ -8,4 +13,5 @@
         </li>
         {% endfor %}
     </ul>
+</div>
 {% endblock %}

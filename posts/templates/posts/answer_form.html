@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<div class="mx-auto col-10 col-md-8 col-lg-6 my-auto">
 <form action="{% url 'answer_post' post_id=post_id %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit">
     </form>
+</div>
 {% endblock %}

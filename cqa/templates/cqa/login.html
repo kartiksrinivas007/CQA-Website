@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<br>
+<br>
+<br>
+ <div class = "d-flex align-items-center justify-content-center">
 <h1>Log in</h1>
+ </div>
+
+    
+    <!-- <p>Enter your username and password below:</p> -->
+    <div class = "d-flex align-items-center justify-content-center">
     <p>{{ errors }}</p>
-    <p>Enter your username and password below:</p>
     <form action="/cqa/login/" method="post">
         {% csrf_token %}
         <p>Username: <input type="text" name="username"></p>
         <p>Password: <input type="password" name="password"></p>
         <input type="submit" value="Log in">
     </form>
+    </div>
 
 {% endblock %}
