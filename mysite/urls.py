@@ -19,7 +19,7 @@ from cqa.views import index
 
 urlpatterns = [
     path('', index, name='index'),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='django-admin'),
     path('cqa/', include('cqa.urls')),
     path('posts/', include('posts.urls')),
     path('search/', include('search.urls'))
