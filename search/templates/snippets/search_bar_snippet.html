@@ -2,9 +2,14 @@
     <input type="search" id="query" name="q" placeholder="Search...">
     <button>Search</button>
 </form> -->
-
+<br>
+<br>
+<br>
+<br>
+<div style="width:100%; text-align:center">     
 <form action="{% url 'search_view' %}" method="POST">
     {% csrf_token %}
+    
     {{ form.as_p }} 
     <input type="submit">
     <script>
@@ -29,5 +34,5 @@
         });
 } );
 </script>
-    </form>
 </form>
+</div>

@@ -166,3 +166,7 @@ class Votes(models.Model):
     class Meta:
         managed = False
         db_table = 'votes'
+
+context = {}
+context["tags"] = ['#' + tag.tag_name for tag in Tags.objects.all()]
+context["users"] = [":" + str(id) + "   Name:   "  + str(display_name) for id, display_name in CustomUser.objects.all().values_list('id','display_name')]

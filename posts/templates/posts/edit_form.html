@@ -6,6 +6,19 @@
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit">
+    <script>
+        $( function() {
+            var tags =[ 
+            {% for tag in tags %} 
+            "{{tag}}", 
+            {% endfor %} 
+            ];
+            $( "#id_tags" ).autocomplete({
+                source: tags,
+                minLength: 1,
+            });
+    } );
+    </script>
 </form> 
 
 {% endblock %}

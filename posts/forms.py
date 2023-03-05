@@ -4,12 +4,12 @@ from setup.tags_to_json import choices
 class CreatePost(forms.Form):
     title = forms.CharField(label='Title', max_length=100)
     body = forms.CharField(widget=forms.Textarea)
-    tags = forms.ChoiceField(choices=choices)
+    tags = forms.CharField(label='Tags', max_length=100)
 
 class EditPost(forms.Form):
     title = forms.CharField(label='Title', max_length=100)
     body = forms.CharField(widget=forms.Textarea)
-    tags = forms.ChoiceField(choices=choices)
+    tags = forms.CharField(label='Tags', max_length=100)
 
     def __init__(self, post, *args, **kwargs):
         super(EditPost, self).__init__(*args, **kwargs)

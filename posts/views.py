@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .models import *
+from cqa.models import *
 from posts.forms import CreatePost, EditPost, AnswerPost
 from django.shortcuts import redirect
 from django.http import HttpResponse
@@ -35,6 +36,7 @@ def detail_post(request, post_id):
 
 
 def create_post(request):
+    global context
     if not request.user.is_authenticated:
         redirect('home')
 
@@ -50,6 +52,9 @@ def create_post(request):
             object.owner_display_name = user.display_name
             object.title = form.cleaned_data['title']
             object.tags = form.cleaned_data['tags']
+            tags = form.cleaned_data['tags'].split(',')
+            tags = [ '<' + tag.strip() + '>' for tag in tags ]
+            object.tags = ''.join(tags)
             object.content_license='CC BY SA 2.5'  # dummy value
             object.body = form.cleaned_data['body']
             # TO DO: insert the corresponding fields into the tags table as well
@@ -61,11 +66,11 @@ def create_post(request):
 
 
     new_post = CreatePost()
-    context = {'form': new_post}
+    context["form"] = new_post
     return render(request, 'posts/creation_form.html', context)
 
 def edit_post(request, post_id):
-
+    global context
     if not request.user.is_authenticated:
         redirect('home')
 
@@ -82,7 +87,10 @@ def edit_post(request, post_id):
             print('Hello')
             curr_post.title = form.cleaned_data['title']
             curr_post.body = form.cleaned_data['body']
-            curr_post.tags = form.cleaned_data['tags']
+            # curr_post.tags = form.cleaned_data['tags']
+            tags = form.cleaned_data['tags'].split(',')
+            tags = [ '<' + tag.strip() + '>' for tag in tags ]
+            curr_post.tags = ''.join(tags)
             curr_post.save()
             return redirect('home')
         else:
@@ -91,7 +99,9 @@ def edit_post(request, post_id):
             print(form.non_field_errors)
     
     form = EditPost(curr_post)
-    context = {'form': form, 'post_id': post_id}
+    context["form"] = form
+    context["post_id"] = post_id
+    # context = {'form': form, 'post_id': post_id}
     return render(request, 'posts/edit_form.html', context)
 
 
