@@ -1,12 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<br><br/>
+<div class="d-flex align-items-center justify-content-center">
     {% if post.title is None %}
         <h1>Untitled Post</h1>
     {% else %}
         <h1>{{post.title}}</h1>
     {% endif%}
+</div>
+
+<div class="d-flex align-items-center justify-content-center">
+    <!-- Posted By: User {{post.owner_user_id}} -->
+    <a href="{%url 'answer_post' post_id=post.id%}" style = 'color:rgb(235, 67, 196); margin:2px'>(Answer)</a>
+    {% if post.owner_user_id == request.user.account_id %}
+    <a href="{%url 'edit_post' post_id=post.id%}" style = 'color:rgb(219, 195, 10); margin:2px'>(Edit)</a>
+    {% endif %}
+</div>
     
+<div class="align-items-center justify-content-center" style="margin-left:20px; margin-right:20px">
     <br><br/>
     {{ post.body | safe }} 
     <br><br/>
@@ -18,12 +30,22 @@
     <br><br/>
     <p>Last Updated = {{post.updated_at}}</p>
     <br><br/> -->
+</div>
+
+
     {% if answers.count > 0 %}
+    <div class="d-flex align-items-center justify-content-center">
         <h2>Answers:</h2>
+    </div>
+    <div class="d-flex align-items-center justify-content-center">
+        <ul>
         {% for post in answers %}
             <li>      
                 {% include 'snippets/post_snippet.html'%}
             </li>
         {% endfor %}
+        </ul>
     {% endif %}
+    </div>
+    
 {% endblock %}

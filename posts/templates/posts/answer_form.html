@@ -1,11 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="mx-auto col-10 col-md-8 col-lg-6 my-auto">
+<br><br>
+<div class="d-flex align-items-center justify-content-center"> 
+    <h1>Answer to Post #{{post_id}}</h1>
+</div>
+<!-- <div class="mx-auto col-10 col-md-8 col-lg-6 my-auto">
 <form action="{% url 'answer_post' post_id=post_id %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit">
     </form>
+</div> -->
+
+<div class="d-flex align-items-center justify-content-center"> 
+    <form action="{% url 'answer_post' post_id=post_id %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit">
+    </form>
 </div>
+
 {% endblock %}
