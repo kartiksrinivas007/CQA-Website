@@ -101,6 +101,8 @@ def answer_post(request, post_id):
             object.owner_user_id = 42 # dummy
             object.post_type_id = '2'
             object.answer_count = 0
+            if not curr_post.answer_count:
+                curr_post.answer_count = 0
             curr_post.answer_count += 1
 
             object.comment_count = 0
