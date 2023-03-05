@@ -8,7 +8,9 @@ from search.forms import SearchForm
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.db.models import Q
-
+context = {}
+context["tags"] = ['#' + tag.tag_name for tag in Tags.objects.all()]
+context["users"] = [":" + str(id) + "   Name:   "  + str(display_name) for id, display_name in CustomUser.objects.all().values_list('id','display_name')]
 # Create your views here.
 def search_view(request):
     if(request.method == 'POST'):
@@ -18,10 +20,8 @@ def search_view(request):
             return redirect('search_results', search = search)
 
     form = SearchForm()
-    context = {}
+    global context
     context["form"] = form
-    context["tags"] = ['#' + tag.tag_name for tag in Tags.objects.all()]
-    context["users"] = [":" + str(id) + "   Name:   "  + str(display_name) for id, display_name in CustomUser.objects.all().values_list('id','display_name')]
     print(context["users"][1])
     return render(request, "search/search_view.html", context)
 
