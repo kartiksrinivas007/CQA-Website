@@ -36,8 +36,11 @@ class search_results_view(ListView):
         search = self.kwargs['search']
         # try user 200302
         if(search[0] == ':'):
-            search = search[1:]
-            q = Posts.objects.filter(Q(owner_user_id__icontains = search))
+            vars = search.split(' ')
+            first_id = vars[0]
+            search = first_id[1:]
+            q = Posts.objects.filter(owner_user_id = int(search))
+            print(search)
             return q
         if(search[0] == '#'):
             tags = search.split(',')

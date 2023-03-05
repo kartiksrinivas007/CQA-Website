@@ -1,16 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
+<br>
+<br>
+<br>
+    <div class = "d-flex align-items-center justify-content-center">
     <h1>Posts</h1>
+    </div>
+    <div class = "d-flex align-items-center justify-content-center">
     <ul>
         {% for post in posts %}
-        {% if post.title != None %}
+        
             <li> 
-                choice {{forloop.counter}} 
+                
                 <a href="{% url 'detail_post' post.id %}">
+                    {% if post.title is None %}
+                    Untitled Post
+                    {% else %} 
                     {{ post.title }}
+                    {% endif %}
                 </a>
             </li>
-        {% endif %}
+        
         {% endfor %}
     </ul>
+    </div>
 {% endblock %}

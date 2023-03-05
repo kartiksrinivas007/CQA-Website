@@ -1,9 +1,21 @@
 {% extends 'base.html' %}
+{% load custom_filter %}
 
 {% block content %}
-    <h1>{{post.title}}</h1>
+<br>
+<br>
+<br>
+
+<div class = "d-flex align-items-center justify-content-center">
+    <h2>{{post.title}}</h2>
     <br><br/>
-    {{ post.body | safe }} 
+</div>
+
+ <div class="mx-auto" style="width: 1760px;">
+    {{post.body |safe}}
+</div>
+
+
     <br><br/>
     <h3>{{post.user}}</h3>
     <!-- that stuff "safe" is needed because the Body is itself an HTML string !!!! other option is to use 

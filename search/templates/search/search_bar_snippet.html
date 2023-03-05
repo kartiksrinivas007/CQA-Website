@@ -5,7 +5,8 @@
 
 <form action="{% url 'search_view' %}" method="POST">
     {% csrf_token %}
-    {{ form.as_p }} 
+    {{ form.as_p }}
+     <!-- this renders with id = id_name  -->
     <input type="submit">
     <script>
     $( function() {
